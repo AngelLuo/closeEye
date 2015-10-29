@@ -1,0 +1,30 @@
+[
+  {
+    "room_num": "9807",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [1],
+    "killer": [2]
+  },
+  {
+    "room_num": "9807",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [1],
+    "killer": [2]
+  },
+  {
+    "room_num": "9807",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [1],
+    "killer": [2]
+  },
+  {
+    "room_num": "9807",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [1],
+    "killer": [2]
+  }
+]

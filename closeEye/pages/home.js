@@ -2,13 +2,14 @@ var React = require('react-native');
 var Util = require('./util');
 
 var {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   TextInput,
   Image,
-  TouchableOpacity
+  StatusBarIOS,
+  TouchableOpacity,
+  Navigator
   } = React;
 
 module.exports =  React.createClass({
@@ -16,14 +17,12 @@ module.exports =  React.createClass({
     return (
       <View style={styles.container}>
 
-        <Image style={[{width:100,height:100}]} source={require('image!bg')} />
-
         <View style={styles.title}>
-          <Text style={{fontSize:20}}>天黑，请闭眼</Text>
+          <Text style={{fontSize:20,}}>天黑，请闭眼</Text>
         </View>
 
         <View style={styles.textInputView}>
-          <TextInput style={styles.textInput} placeholder="请输入房间号"/>
+          <TextInput style={styles.textInput} placeholder="请输入房间号" keyboardType="numeric"/>
         </View>
 
         <TouchableOpacity style={[styles.btn, {marginTop:10}]}>
@@ -41,7 +40,8 @@ module.exports =  React.createClass({
 
 var styles = StyleSheet.create({
   container:{
-    flex:1
+    flex:1,
+    backgroundColor:'#FFF'
   },
   textInputView:{
     height:40,
@@ -55,18 +55,19 @@ var styles = StyleSheet.create({
     padding:5,
     height:35,
     borderColor:'#ABABAB',
-    borderRadius:4
+    borderRadius:4,
+    backgroundColor:'#fff'
   },
   title:{
     height:40,
-    marginTop:40,
+    marginTop:50,
     alignItems:'center',
     justifyContent:'center'
   },
   btn:{
     marginTop:10,
     backgroundColor:'#FF8400',
-    height:45,
+    height:42,
     marginLeft:10,
     marginRight:10,
     alignItems:'center',

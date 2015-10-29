@@ -1,50 +1,31 @@
 
 var React = require('react-native');
-var home = require('./pages/home');
+var Home = require('./pages/home');
+var create = require('./pages/create');
+var judge = require('./pages/judge');
 
 var {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} = React;
+  Navigator,
+  } = React;
 
-var closeEye = React.createClass({
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-});
+//var App = React.createClass({
+//  render: function(){
+//    return(
+//      <Navigator
+//        initialRoute={{name: 'home', component: Home, index:0}}
+//        configureScene={()=>{return Navigator.SceneConfigs.FloatFromRight;}}
+//        renderScene={(route, navigator) => {
+//          if (route.component) {
+//            return React.createElement(route.component, { navigator });
+//          }
+//        }}
+//        />
+//    );
+//  }
+//});
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('closeEye', () => home);
+
+
+AppRegistry.registerComponent('closeEye', () => judge);
