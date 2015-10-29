@@ -236,8 +236,30 @@ router.get('/room_num', function(req, res, next) {
     info: '该房间已过期'
   };
 
+});
+
+
+//黑夜
+router.get('/night/sha', function(req, res, next) {
+  var client_id = req.param('client_id');
+  var room_num = req.param('room_num');
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;
 
