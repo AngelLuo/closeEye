@@ -14,7 +14,7 @@ window.navigator.userAgent = "react-native-closeEye";
 var io = require('socket.io-client/socket.io');
 
 var socket = io.connect('http://localhost:3000');
-socket.on('news', function (data) {
+socket.on('link', function (data) {
   console.log(data);
   alert(socket.id);
   socket.emit('my other event', "shsh", {test: 'test'});

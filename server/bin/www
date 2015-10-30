@@ -21,6 +21,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -28,6 +29,37 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+* 增加socket.io，开启监听
+* */
+var io = require('socket.io')(server);
+io.on('connection', function (socket) {
+
+  //测试联通，触发link
+  socket.emit('link', {message: "socket.io服务启动"});
+
+
+  socket.on('getUserInfo', function (message) {
+    var client_id = message.client_id; /*用户的设备ID*/
+    var msg = message.message; /*消息*/
+    var room_num = message.room_num; /*房间号*/
+
+
+  });
+
+
+  io.sockets.connected[socket.id].emit('message', '针对单个客户端通道');
+
+});
+
+
+io.on('connection', function(socket){
+  socket.join('some room');
+  // socket.leave('some room');
+});
+
+
 
 /**
  * Normalize a port into a number, string, or false.
