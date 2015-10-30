@@ -1,7 +1,6 @@
 
 var React = require('react-native');
 var Home = require('./pages/home');
-var create = require('./pages/create');
 var judge = require('./pages/judge');
 
 var {
@@ -15,14 +14,9 @@ var io = require('socket.io-client/socket.io');
 
 var socket = io.connect('http://localhost:3000');
 socket.on('link', function (data) {
-  console.log(data);
-  alert(socket.id);
-  socket.emit('my other event', "shsh", {test: 'test'});
+  console.log('连接成功');
 });
 
-socket.on('message', function (data) {
-  alert(data);
-});
 
 
 var App = React.createClass({
@@ -33,7 +27,7 @@ var App = React.createClass({
     return(
       <Navigator
         initialRoute={{name: 'home', component: Home, index:0}}
-        configureScene={()=>{return Navigator.SceneConfigs.FloatFromRight;}}
+        configureScene={()=>{return Navigator.SceneConfigs.FloatFromBottom;}}
         renderScene={(route, navigator) => {
           if (route.component) {
             return React.createElement(route.component, { navigator });
@@ -47,4 +41,4 @@ var App = React.createClass({
 
 
 
-AppRegistry.registerComponent('closeEye', () => judge);
+AppRegistry.registerComponent('closeEye', () => App);

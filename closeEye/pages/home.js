@@ -1,5 +1,6 @@
 var React = require('react-native');
 var Util = require('./util');
+var Create = require('./create');
 
 var {
   StyleSheet,
@@ -29,12 +30,18 @@ module.exports =  React.createClass({
           <Text style={styles.btnText}>进入房间</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.btn, {backgroundColor:'#5EBE00'}]}>
+        <TouchableOpacity style={[styles.btn, {backgroundColor:'#5EBE00'}]} onPress={this._loadPage}>
           <Text style={styles.btnText}>创建房间</Text>
         </TouchableOpacity>
 
       </View>
     );
+  },
+  //创建房间
+  _loadPage: function(){
+    this.props.navigator.push({
+        component: Create
+    });
   }
 });
 

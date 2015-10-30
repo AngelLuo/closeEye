@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
+var query = require('./../socket_query/query');
 
 /**
  * Get port from environment and store in Express.
@@ -39,25 +40,55 @@ io.on('connection', function (socket) {
   //测试联通，触发link
   socket.emit('link', {message: "socket.io服务启动"});
 
-
-  socket.on('getUserInfo', function (message) {
+  //加入房间操作
+  socket.on('joinRoom', function (message) {
     var client_id = message.client_id; /*用户的设备ID*/
-    var msg = message.message; /*消息*/
     var room_num = message.room_num; /*房间号*/
 
+    //加入某个房间
+    //该房间1～n号都能进
+    socket.join(room_num);
+    //查询用户信息
+    var userInfo = query.getUserTypeByClientID(client_id, room_num);
+    //加入身份房间
+    //警察和杀手分别进入自己的房间
+    if(userInfo.type === 'police' || userInfo.type === 'killer'){
+      socket.join(room_num + '_' + userInfo.type);
+    }
+  });
 
+  //根据房间号广播消息
+  socket.on('day_broadcast', function(room_num, message){
+    //向所有的同伴广播消息，包括自己
+    io.sockets.in(room_num).emit('message', message);
+  });
+
+  //杀手间广播消息
+  socket.on('killer_broadcast', function(client_id, room_num, message){
+    var userInfo = query.getUserTypeByClientID(client_id, room_num);
+    if(userInfo.type === 'killer'){
+      io.sockets.in(room_num + '_killer').emit('message', message);
+    }
+    //else do noting
+  });
+
+  //警察间广播消息
+  socket.on('police_broadcast', function(client_id, room_num, message){
+    var userInfo = query.getUserTypeByClientID(client_id, room_num);
+    if(userInfo.type === 'police'){
+      io.sockets.in(room_num + '_police').emit('message', message);
+    }
+    //else do noting
   });
 
 
-  io.sockets.connected[socket.id].emit('message', '针对单个客户端通道');
+
+
+
+  //io.sockets.connected[socket.id].emit('message', '针对单个客户端推送');
 
 });
 
-
-io.on('connection', function(socket){
-  socket.join('some room');
-  // socket.leave('some room');
-});
 
 
 

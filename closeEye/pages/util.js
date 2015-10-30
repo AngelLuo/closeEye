@@ -80,6 +80,31 @@ Util.post = function (url, data, successCallback, errCallback) {
     });
 };
 
+Util.baseURL = 'http://localhost:3000/';
+
+
+
+/**
+ * 基于fetch的get方法
+ * @method post
+ * @param {string} url
+ * @param {function} callback 回调
+ * @return {null} 没有返回值
+ */
+Util.get = function(path, callback){
+  var url = Util.baseURL + path;
+
+  fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => {
+      console.log(responseText);
+      callback(responseText);
+    })
+    .catch(function(err){
+      alert('服务出错');
+    });
+};
+
 
 
 module.exports = Util;

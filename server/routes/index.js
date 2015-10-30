@@ -5,6 +5,7 @@ var fs = require('fs');
 var FILE_NAME = './db.json';
 
 /*创建房间*/
+/*url: http://localhost:3000/create?all_counts=6&police_counts=1&killer_counts=1*/
 router.get('/create', function(req, res, next) {
   //总人数
   var all_counts = parseInt(req.param('all_counts'));
@@ -175,7 +176,8 @@ function randomN(allCounts, arr){
 
 
 /*几号进哪个房间*/
-router.get('/room_num', function(req, res, next) {
+/*url: http://localhost:3000/join?client_id=wlh&room_num=0358*/
+router.get('/join', function(req, res, next) {
   //房间号
   var room_num = req.param('room_num');
   //设备ID
@@ -198,7 +200,7 @@ router.get('/room_num', function(req, res, next) {
       //如果存在client_id，则直接返回号码和身份
       var room = db[i];
       for(var j in room.people){
-        if(room.people[j] === client_id){
+        if(room.people[j] && room.people[j].client_id === client_id){
           //返回当前用户的编号
           return res.send({status:1, num: j});
         }
@@ -218,7 +220,11 @@ router.get('/room_num', function(req, res, next) {
         });
       }
       //如果不存在，直接push到数组
-      room.people.push(client_id);
+      room.people.push({
+        client_id: client_id, //用户设备ID
+        count: 0,  //表示用户被投票几次
+        is_over: 'false' //表示用户是否死亡
+      });
 
       try{
         //写入到db.json
@@ -231,10 +237,10 @@ router.get('/room_num', function(req, res, next) {
     }
   }
 
-  return {
+  return res.send({
     status: 0,
     info: '该房间已过期'
-  };
+  });
 
 });
 
