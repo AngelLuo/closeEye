@@ -58,20 +58,48 @@ module.exports = React.createClass({
 
   _allCounts: function(val){
     this.setState({
-      all_counts: parseInt(val)
+      all_counts: val
     });
+    this._setNum();
+  },
+
+  _setNum: function(type, val){
+    var that = this;
+    setTimeout(function(){
+      var all_counts = parseInt(that.state.all_counts);
+      var police_counts = parseInt(that.state.police_counts);
+      var killer_counts = parseInt(that.state.killer_counts);
+      var people_counts = all_counts - police_counts - killer_counts;
+
+      //数据合法时设置数据
+      if(people_counts > 0){
+        that.setState({
+          police_counts: police_counts.toString(),
+          killer_counts: killer_counts.toString(),
+          people_counts: people_counts.toString()
+        });
+      }else{ /*当用户数据不合法时，置空*/
+        that.setState({
+          police_counts: '0',
+          killer_counts: '0',
+          people_counts: '0'
+        });
+      }
+    }, 1000);
   },
 
   _policeCounts: function(val){
     this.setState({
-      police_counts: parseInt(val)
+      police_counts: val
     });
+    this._setNum();
   },
 
   _killerCounts: function(val){
     this.setState({
-      killer_counts: parseInt(val)
+      killer_counts: val
     });
+    this._setNum();
   },
 
   _createRoom: function(){
