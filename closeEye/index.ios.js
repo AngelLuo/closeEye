@@ -6,6 +6,7 @@ var judge = require('./pages/judge');
 var {
   AppRegistry,
   Navigator,
+  View
   } = React;
 
 
@@ -29,9 +30,12 @@ var App = React.createClass({
         initialRoute={{name: 'home', component: Home, index:0}}
         configureScene={()=>{return Navigator.SceneConfigs.FloatFromBottom;}}
         renderScene={(route, navigator) => {
-          if (route.component) {
-            return React.createElement(route.component, { navigator });
-          }
+          const Component = route.component;
+          return (
+            <View style={{flex: 1}}>
+              <Component navigator={navigator} route={route} {...route.passProps}/>
+            </View>
+          )
         }}
         />
     );

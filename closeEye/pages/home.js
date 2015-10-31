@@ -1,6 +1,6 @@
 var React = require('react-native');
 var Util = require('./util');
-var Create = require('./create');
+var Create = require('./create_room');
 
 var {
   StyleSheet,
