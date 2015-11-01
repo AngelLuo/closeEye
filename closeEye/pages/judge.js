@@ -42,7 +42,6 @@ module.exports = React.createClass({
     var policeStr =  '@' + data.room.police.join('@') + '@';
     var killerStr = '@' + data.room.killer.join('@') + '@';
 
-    console.log(policeStr);
     for(var i = 0; i < len; i++){
       if(i % 3 === 0){
         var row = [];
@@ -84,13 +83,33 @@ module.exports = React.createClass({
           <Text style={{color:'#000', fontSize:14}}>(房间号)</Text>
         </View>
         {items}
-        <View style={[styles.btn, styles.center]}>
+        <TouchableOpacity style={[styles.btn, styles.center]} onPress={this._gameOver}>
           <Text style={{color:'#fff', fontWeight:'bold', fontSize:15}}>结束游戏</Text>
-        </View>
+        </TouchableOpacity>
         <View style={{height:30}}>
         </View>
       </ScrollView>
     );
+  },
+  //结束游戏
+  _gameOver: function(){
+    var data = this.props.data;
+    var client_id = this.props.client_id;
+    var room_num = data.room.room_num;
+
+    var path = 'gameover?client_id=' + client_id;
+    path += '&room_num=' + room_num;
+
+    var that = this;
+    Util.get(path, function(data){
+      if(data.status){
+        alert('游戏结束');
+        that.props.navigator.popToTop();
+      }else{
+        that.props.navigator.popToTop();
+      }
+    });
+
   }
 });
 

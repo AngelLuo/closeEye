@@ -106,15 +106,16 @@ module.exports = React.createClass({
     AdSupportIOS.getAdvertisingTrackingEnabled(function(e){
       if(e){
         AdSupportIOS.getAdvertisingId(function(uuid){
-          var clinet_id = uuid;
-          path += '&client_id=' + clinet_id;
+          var client_id = uuid;
+          path += '&client_id=' + client_id;
 
           Util.get(path, function(data){
             if(data.status){
               that.props.navigator.push({
                 component: Judge,
                 passProps:{
-                  data: data
+                  data: data,
+                  client_id: client_id
                 }
               });
             }else{

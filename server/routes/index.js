@@ -252,10 +252,54 @@ router.get('/join', function(req, res, next) {
 });
 
 
-//黑夜
-router.get('/night/sha', function(req, res, next) {
+//结束游戏
+router.get('/gameover', function(req, res, next) {
   var client_id = req.param('client_id');
   var room_num = req.param('room_num');
+
+  if(!client_id || (!room_num && room_num !== '0000')){
+    return res.send({
+      status: 0,
+      info: '参数不完整或者参数错误'
+    });
+  }
+
+  //数据表
+  var db = null;
+  //读取数据
+  try{
+    db = JSON.parse(fs.readFileSync(FILE_NAME).toString());
+  }catch(e){
+    return res.send({
+      status: 0,
+      info:'读取数据失败'
+    })
+  }
+
+  for(var i in db){
+    //当前用户创建的房间
+    if(db[i].create_id === client_id && db[i].room_num === room_num){
+      db[i].is_over = "true";
+      try{
+        fs.writeFileSync(FILE_NAME, JSON.stringify(db));
+        return res.send({
+          status: 1,
+          info: '游戏结束'
+        });
+      }catch(e){
+        return res.send({
+          status: 0,
+          info: '修改文件失败'
+        });
+      }
+
+    }
+  }
+
+  return res.send({
+    status: 0,
+    info: '没有找到该房间'
+  });
 
 });
 
