@@ -1110,5 +1110,63 @@
       5
     ],
     "people": []
+  },
+  {
+    "create_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+    "room_num": "2038",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [
+      2
+    ],
+    "killer": [
+      0
+    ],
+    "people": []
+  },
+  {
+    "create_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+    "room_num": "4633",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [
+      4
+    ],
+    "killer": [
+      2
+    ],
+    "people": []
+  },
+  {
+    "create_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+    "room_num": "3925",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [
+      4
+    ],
+    "killer": [
+      5
+    ],
+    "people": []
+  },
+  {
+    "create_id": "3CFF6F9-F499-4801-9C19-85E89A2EA22E",
+    "room_num": "0329",
+    "is_over": "true",
+    "all_counts": 6,
+    "police": [
+      3
+    ],
+    "killer": [
+      1
+    ],
+    "people": [
+      {
+        "client_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+        "count": 0,
+        "is_over": "false"
+      }
+    ]
   }
 ]
