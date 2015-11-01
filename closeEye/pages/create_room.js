@@ -11,7 +11,8 @@ var {
   ScrollView,
   StatusBarIOS,
   TouchableOpacity,
-  Navigator
+  Navigator,
+  AdSupportIOS
   } = React;
 
 module.exports = React.createClass({
@@ -102,18 +103,33 @@ module.exports = React.createClass({
     path += '&police_counts=' + police_counts;
     path += '&killer_counts=' + killer_counts;
 
-    Util.get(path, function(data){
-      if(data.status){
-        that.props.navigator.push({
-          component: Judge,
-          passProps:{
-            data: data
-          }
+    AdSupportIOS.getAdvertisingTrackingEnabled(function(e){
+      if(e){
+        AdSupportIOS.getAdvertisingId(function(uuid){
+          var clinet_id = uuid;
+          path += '&client_id=' + clinet_id;
+
+          Util.get(path, function(data){
+            if(data.status){
+              that.props.navigator.push({
+                component: Judge,
+                passProps:{
+                  data: data
+                }
+              });
+            }else{
+              alert('创建房间失败');
+            }
+          });
+
+        }, function(){
+          alert('无法获取用户唯一标示');
         });
-      }else{
-        alert('创建房间失败');
       }
+    }, function(e){
+      alert('无法获取设备唯一标识，请关闭设置->隐私->广告->限制广告跟踪');
     });
+
   }
 });
 

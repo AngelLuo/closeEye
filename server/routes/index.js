@@ -15,6 +15,13 @@ router.get('/create', function(req, res, next) {
   var killer_counts = parseInt(req.param('killer_counts'));
   //设备ID
   var client_id = req.param('client_id');
+
+  if(!all_counts || !police_counts || !killer_counts || !client_id){
+    return res.send({
+      status: 0,
+      info: '参数不完整或者有误'
+    });
+  }
   //数据表
   var db = null;
   //读取数据
