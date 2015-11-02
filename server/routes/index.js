@@ -180,8 +180,6 @@ function randomN(allCounts, arr){
 }
 
 
-
-
 /*几号进哪个房间*/
 /*url: http://localhost:3000/join?client_id=wlh&room_num=0358*/
 router.get('/join', function(req, res, next) {
@@ -209,14 +207,23 @@ router.get('/join', function(req, res, next) {
       for(var j in room.people){
         if(room.people[j] && room.people[j].client_id === client_id){
           //返回当前用户的编号
-          return res.send({status:1, num: j});
+          //查询该用户的类型
+          var userObj = getUserType(room, j);
+          return res.send({
+            status:1,
+            num: j /*用户编号*/
+          });
         }
       }
 
       //房主，返回所有信息
       if(room.create_id === client_id ){
         delete room.people;
-        return res.send({status:1, room: room});
+        return res.send({
+          status:1,
+          type: 'admin_room', /*房主，即创建者*/
+          room: room
+        });
       }
 
       //房间人数已满，拒绝进入
@@ -237,9 +244,16 @@ router.get('/join', function(req, res, next) {
         //写入到db.json
         fs.writeFileSync(FILE_NAME, JSON.stringify(db));
         //返回第一次进入的编号
-        return res.send({status:1, num: room.people.length - 1});
+        var index = room.people.length - 1;
+        return res.send({
+          status: 1,
+          num: index
+        });
       }catch(e){
-        return res.send({status: 0});
+        return res.send({
+          status: 0,
+          info: '服务出错'
+        });
       }
     }
   }
@@ -250,6 +264,37 @@ router.get('/join', function(req, res, next) {
   });
 
 });
+
+
+/**
+ * 返回用户类型
+ *
+ * @param {object} data
+ * @return {object} 用户类型police，killer，people
+ * @api private
+ */
+function getUserType(data, index){
+  var policeStr =  '@' + data.police.join('@') + '@';
+  var killerStr = '@' + data.killer.join('@') + '@';
+
+  if(policeStr.indexOf('@' + index+ '@') >= 0){
+    return {
+      type: 'police',
+      police: data.police
+    };
+  }
+
+  if(killerStr.indexOf('@' + index+ '@') >= 0){
+    return {
+      type: 'killer',
+      killer: data.killer
+    };
+  }
+
+  return {
+    type: 'people'
+  };
+}
 
 
 //结束游戏
