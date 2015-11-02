@@ -16,25 +16,61 @@ var {
   } = React;
 
 module.exports = React.createClass({
+  getInitialState: function(){
+    return {
+      msg: '',
+      index: 1
+    };
+  },
   render: function(){
     return (
       <View style={styles.wrapper}>
         <View style={styles.center}>
-          <SegmentedControlIOS values={['公共频道', '特殊频道']} selectedIndex={0} style={{width:200}}/>
+          <SegmentedControlIOS values={['公共频道', '特殊频道']}
+                               onValueChange={this._valueChange}
+                               selectedIndex={this.state.index}
+                               style={{width:200}}/>
         </View>
         <View>
           <TextInput style={styles.inputArea} multiline={true} editable={false}/>
         </View>
 
         <View>
-          <TextInput style={styles.input} multiline={true}/>
+          <TextInput style={styles.input} onChangeText={this._sendMsg}/>
         </View>
 
-        <TouchableOpacity style={[styles.center, styles.btn]}>
+        <TouchableOpacity style={[styles.center, styles.btn]} onPress={this._sender}>
           <Text style={{color:'#fff'}}>发送</Text>
         </TouchableOpacity>
       </View>
     );
+  },
+
+  _sendMsg: function(val){
+    this.setState({
+      msg: val
+    });
+  },
+
+  _sender: function(){
+    var msg = this.state.msg;
+    var index = this.state.index;
+
+    //TODO:发送消息到后台
+
+  },
+
+  _valueChange: function(val){
+    if(val === '公共频道'){
+      this.setState({
+        index: 0
+      });
+    }
+    if(val === '特殊频道'){
+      this.setState({
+        index: 1
+      });
+    }
   }
 });
 
@@ -57,12 +93,13 @@ var styles = StyleSheet.create({
     borderWidth:Util.pixel,
     marginLeft:10,
     marginRight:10,
-    height:30,
+    height:35,
     borderColor:'#ABABAB',
     borderRadius:3,
     marginTop:10,
     paddingLeft:10,
-    fontSize:15
+    fontSize:15,
+    lineHeight:25
   },
   center:{
     justifyContent:'center',

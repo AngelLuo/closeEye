@@ -67,6 +67,10 @@ module.exports = React.createClass({
           <Text style={{color:'#000', fontSize:14}}>(房间号)</Text>
         </View>
         {items}
+        <View>
+          <Text style={{marginLeft:10,marginTop:10}}>用户对话</Text>
+          <TextInput style={[styles.input]} multiline={true} editable={false}/>
+        </View>
         <TouchableOpacity style={[styles.btn, styles.center]} onPress={this._gameOver}>
           <Text style={{color:'#fff', fontWeight:'bold', fontSize:15}}>结束游戏</Text>
         </TouchableOpacity>
@@ -109,8 +113,8 @@ var styles = StyleSheet.create({
     alignItems:'center'
   },
   btn:{
-    marginLeft:30,
-    marginRight:30,
+    marginLeft:10,
+    marginRight:10,
     height:40,
     borderWidth:Util.pixel,
     marginTop:30,
@@ -122,5 +126,15 @@ var styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     marginTop:25
+  },
+  input:{
+    borderWidth:Util.pixel,
+    marginLeft:10,
+    marginRight:10,
+    marginTop:10,
+    height:120,
+    paddingLeft:10,
+    borderColor:'#ABABAB',
+    borderRadius:4
   }
 });
