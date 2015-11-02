@@ -1,6 +1,6 @@
 var React = require('react-native');
 var Util = require('./util');
-var Killer = require('./killer');
+var Item = require('./item');
 
 var {
   StyleSheet,
@@ -27,8 +27,8 @@ module.exports = React.createClass({
 
     return (
       <ScrollView>
-        <View>
-          <Text>{this.props.room_num}</Text>
+        <View style={styles.room_num}>
+          <Text style={{fontSize:35, color:'#F70225'}}>{this.props.room_num}</Text>
         </View>
         {rows}
       </ScrollView>
@@ -39,19 +39,10 @@ module.exports = React.createClass({
   componentDidMount: function(){
     var data = this.props.data;
     if(data.status){
-
-      //平民
-      if(data.type && data.type === 'people'){
-
-      }
-      //警察
-      if(data.type && data.type === 'police'){
-
-      }
-      //杀手
-      if(data.type && data.type === 'killer'){
+      
+      if(data.type && data.type !== 'admin_room'){
         this.setState({
-          rows: <Killer data={data}/>
+          rows: <Item data={data}/>
         });
       }
 
@@ -62,6 +53,10 @@ module.exports = React.createClass({
 });
 
 var styles = StyleSheet.create({
-
+  room_num:{
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:25
+  }
 });
 
