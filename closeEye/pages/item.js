@@ -51,10 +51,7 @@ module.exports = React.createClass({
     }
     return (
       <View style={{flex:1}}>
-        <ScrollView>
-          {rows}
-        </ScrollView>
-
+        {rows}
       </View>
     );
   }

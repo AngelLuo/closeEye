@@ -1,36 +1,34 @@
 var React = require('react-native');
 var Util = require('./util');
 var Item = require('./item');
+var Talk = require('./talk');
 
 var {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Image,
   ScrollView,
-  StatusBarIOS,
-  TouchableOpacity,
-  Navigator,
-  AdSupportIOS
   } = React;
 
 module.exports = React.createClass({
   getInitialState: function(){
    return {
-     rows: null
+     rows: null,
+     talk: null
    };
   },
 
   render: function(){
     var rows = this.state.rows;
-
+    var talk = this.state.talk;
     return (
       <ScrollView>
         <View style={styles.room_num}>
           <Text style={{fontSize:35, color:'#F70225'}}>{this.props.room_num}</Text>
         </View>
         {rows}
+        {talk}
       </ScrollView>
     );
 
@@ -39,10 +37,11 @@ module.exports = React.createClass({
   componentDidMount: function(){
     var data = this.props.data;
     if(data.status){
-      
+
       if(data.type && data.type !== 'admin_room'){
         this.setState({
-          rows: <Item data={data}/>
+          rows: <Item data={data}/>,
+          talk: <Talk/>
         });
       }
 
