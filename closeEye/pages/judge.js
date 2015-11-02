@@ -30,12 +30,7 @@ module.exports = React.createClass({
   render: function() {
     var data = this.props.data;
     var room_num = data.room.room_num;
-    var img = {
-      police: 'http://vczero.github.io/ctrip/jincha.png',
-      killer: 'http://vczero.github.io/ctrip/shashou.png',
-      people: 'http://vczero.github.io/ctrip/pingmin.png'
-    };
-
+    var img = Util.avatarImg;
     var items = [];
     var len = parseInt(data.room.all_counts);
     //用于判断用户的身份识别

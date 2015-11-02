@@ -80,9 +80,15 @@ Util.post = function (url, data, successCallback, errCallback) {
     });
 };
 
+//服务请求基础URL
 Util.baseURL = 'http://localhost:3000/';
 
-
+//用户身份头像
+Util.avatarImg = {
+  police: 'http://vczero.github.io/ctrip/jincha.png',
+  killer: 'http://vczero.github.io/ctrip/shashou.png',
+  people: 'http://vczero.github.io/ctrip/pingmin.png'
+};
 
 /**
  * 基于fetch的get方法

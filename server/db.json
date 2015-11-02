@@ -1073,7 +1073,7 @@
     "people": []
   },
   {
-    "create_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+    "create_id": "0CFF6F9-F499-4801-9C19-85E89A2EA22E",
     "room_num": "6212",
     "is_over": "false",
     "all_counts": 6,
@@ -1083,7 +1083,13 @@
     "killer": [
       3
     ],
-    "people": []
+    "people": [
+      {
+        "client_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
+        "count": 0,
+        "is_over": "false"
+      }
+    ]
   },
   {
     "create_id": "30CFF6F9-F499-4801-9C19-85E89A2EA22E",
@@ -1153,13 +1159,13 @@
   {
     "create_id": "3CFF6F9-F499-4801-9C19-85E89A2EA22E",
     "room_num": "0329",
-    "is_over": "true",
+    "is_over": "false",
     "all_counts": 6,
     "police": [
       3
     ],
     "killer": [
-      1
+      0
     ],
     "people": [
       {

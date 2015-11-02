@@ -180,8 +180,9 @@ function randomN(allCounts, arr){
 }
 
 
-/*几号进哪个房间*/
+/*进房间*/
 /*url: http://localhost:3000/join?client_id=wlh&room_num=0358*/
+
 router.get('/join', function(req, res, next) {
   //房间号
   var room_num = req.param('room_num');
@@ -211,7 +212,10 @@ router.get('/join', function(req, res, next) {
           var userObj = getUserType(room, j);
           return res.send({
             status:1,
-            num: j /*用户编号*/
+            all_counts: room.all_counts,
+            type: userObj.type,
+            partner: userObj.partner,
+            num: j
           });
         }
       }
@@ -221,7 +225,8 @@ router.get('/join', function(req, res, next) {
         delete room.people;
         return res.send({
           status:1,
-          type: 'admin_room', /*房主，即创建者*/
+          all_counts: room.all_counts,
+          type: 'admin_room',
           room: room
         });
       }
@@ -235,19 +240,22 @@ router.get('/join', function(req, res, next) {
       }
       //如果不存在，直接push到数组
       room.people.push({
-        client_id: client_id, //用户设备ID
-        count: 0,  //表示用户被投票几次
-        is_over: 'false' //表示用户是否死亡
+        client_id: client_id,
+        count: 0,
+        is_over: 'false'
       });
 
       try{
         //写入到db.json
         fs.writeFileSync(FILE_NAME, JSON.stringify(db));
-        //返回第一次进入的编号
         var index = room.people.length - 1;
+        var userObj = getUserType(room, index);
         return res.send({
           status: 1,
-          num: index
+          all_counts: room.all_counts,
+          num: index,
+          type: userObj.type,
+          partner: userObj.partner
         });
       }catch(e){
         return res.send({
@@ -280,19 +288,20 @@ function getUserType(data, index){
   if(policeStr.indexOf('@' + index+ '@') >= 0){
     return {
       type: 'police',
-      police: data.police
+      partner: data.police
     };
   }
 
   if(killerStr.indexOf('@' + index+ '@') >= 0){
     return {
       type: 'killer',
-      killer: data.killer
+      partner: data.killer
     };
   }
 
   return {
-    type: 'people'
+    type: 'people',
+    partner:[]
   };
 }
 

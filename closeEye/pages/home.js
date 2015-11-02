@@ -1,6 +1,6 @@
 var React = require('react-native');
 var Util = require('./util');
-var Create = require('./create_room');
+var Create = require('./create');
 var Join = require('./join');
 
 var {
@@ -26,7 +26,7 @@ module.exports =  React.createClass({
       <View style={styles.container}>
 
         <View style={styles.title}>
-          <Text style={{fontSize:20,}}>天黑，请闭眼</Text>
+          <Text style={{fontSize:20,}}>TEST</Text>
         </View>
 
         <View style={styles.textInputView}>
@@ -34,11 +34,11 @@ module.exports =  React.createClass({
         </View>
 
         <TouchableOpacity style={[styles.btn, {marginTop:10}]} onPress={this._joinHome}>
-          <Text style={styles.btnText}>进入房间</Text>
+          <Text style={styles.btnText}>进入</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.btn, {backgroundColor:'#5EBE00'}]} onPress={this._loadPage}>
-          <Text style={styles.btnText}>创建房间</Text>
+          <Text style={styles.btnText}>创建</Text>
         </TouchableOpacity>
 
       </View>
@@ -65,16 +65,18 @@ module.exports =  React.createClass({
           var client_id = uuid;
           var path = 'join?client_id=' + client_id;
           path += '&room_num=' + room_num;
+
           Util.get(path, function(data){
             if(data.status){
               that.props.navigator.push({
                 component: Join,
                 passProps:{
-                  data: data
+                  data: data,
+                  room_num: room_num
                 }
               });
             }else{
-              alert('进入房间失败');
+              alert(data.info);
             }
           });
 
