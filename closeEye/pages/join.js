@@ -41,7 +41,7 @@ module.exports = React.createClass({
       if(data.type && data.type !== 'admin_room'){
         this.setState({
           rows: <Item data={data}/>,
-          talk: <Talk/>
+          talk: <Talk num={data.num} room_num={this.props.room_num}/>
         });
       }
 

@@ -15,25 +15,44 @@ var {
   SegmentedControlIOS
   } = React;
 
+var tabMenu = ['公共频道', '特殊频道'];
+
 module.exports = React.createClass({
   getInitialState: function(){
     return {
       msg: '',
-      index: 1
+      index: 1,
+      textSpecial: '',
+      textCommon: ''
     };
   },
   render: function(){
     return (
       <View style={styles.wrapper}>
         <View style={styles.center}>
-          <SegmentedControlIOS values={['公共频道', '特殊频道']}
+          <SegmentedControlIOS values={tabMenu}
                                onValueChange={this._valueChange}
                                selectedIndex={this.state.index}
                                style={{width:200}}/>
         </View>
-        <View>
-          <TextInput style={styles.inputArea} multiline={true} editable={false}/>
-        </View>
+        {
+          this.state.index ?
+            <View style={{height:120}}>
+              <ScrollView style={[styles.textShow]}>
+                <Text>
+                  {this.state.textSpecial}
+                </Text>
+              </ScrollView>
+            </View>
+            :
+            <View style={{height:120}}>
+              <ScrollView style={[styles.textShow]}>
+                <Text>
+                  {this.state.textCommon}
+                </Text>
+              </ScrollView>
+            </View>
+        }
 
         <View>
           <TextInput style={styles.input} onChangeText={this._sendMsg}/>
@@ -55,9 +74,16 @@ module.exports = React.createClass({
   _sender: function(){
     var msg = this.state.msg;
     var index = this.state.index;
+    var room_num = this.props.room_num;
+    var num = this.props.num;
 
-    //TODO:发送消息到后台
-
+    socket.emit('messageSender', {
+      value: tabMenu[index],
+      index: index,
+      msg: msg,
+      room_num: room_num,
+      num: num
+    });
   },
 
   _valueChange: function(val){
@@ -71,6 +97,27 @@ module.exports = React.createClass({
         index: 1
       });
     }
+  },
+
+  componentDidMount: function(){
+    var that = this;
+    var room_num = this.props.room_num;
+    //公共频道
+    socket.on(room_num + '_messageSender_common', function(data){
+      var text = that.state.textCommon;
+      text += data.num + '号说：' + data.msg + '\n' ;
+      that.setState({
+        textCommon: text
+      });
+    });
+    //特殊频道
+    socket.on(room_num + '_messageSender_special', function(data){
+      var text = that.state.textSpecial;
+      text += data.num + '：' + data.msg + '\n';
+      that.setState({
+        textSpecial: text
+      });
+    });
   }
 });
 
@@ -79,15 +126,15 @@ var styles = StyleSheet.create({
     height:200,
     marginTop:20,
   },
-  inputArea:{
+  textShow:{
     marginTop:20,
     marginLeft:10,
     marginRight:10,
     borderWidth:Util.pixel,
-    height:150,
     borderColor:'#ABABAB',
     borderRadius:3,
-    paddingLeft:10
+    paddingLeft:5,
+    flex:1
   },
   input:{
     borderWidth:Util.pixel,

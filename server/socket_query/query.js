@@ -12,98 +12,21 @@ module.exports = function(socket){
    */
   socket.emit('link', {message: "socket.io服务启动"});
 
-  /**
-   * 加入房间操作，两个作用：（1）更新数据库 （2）刷新所有用户界面
-   *
-   * @param {number} allCounts
-   * @param {number} policeCounts
-   * @param {number} killerCounts
-   * @return {object}
-   * @api private
-   */
-  socket.on('joinRoom', function (message) {
-    var client_id = message.client_id; /*用户的设备ID*/
-    var room_num = message.room_num; /*房间号*/
-    //写进数据库
-    var db = null;
-    //读取数据
-    try{
-      db = JSON.parse(fs.readFileSync(FILE_NAME).toString());
-    }catch(e){
-      return res.send({
-        status: 0,
-        info:'读取数据失败'
-      })
+  socket.on('messageSender', function(data){
+    var room_num = data.room_num;
+    var msg = data.msg;
+    var index = data.index;
+    var num = data.num;
+
+    //公共频道
+    if(index === 0){
+      socket.emit(room_num + '_messageSender_common', {msg: msg, num: num});
+    }else{
+      socket.emit(room_num + '_messageSender_special', {msg: msg, num: 'XX说：'});
     }
-
-    for(var i in db){
-      if(db[i].room_num === room_num){
-        var room = db[i];
-        //(1)直接进入
-        for(var j in room.people){
-          if(room.people[j] && room.people[j].client_id === client_id){
-            var msgObj = {
-              status:1,
-              all_counts: room.all_counts,
-              num: j
-            };
-            return socket.emit('roomShow', msgObj);
-          }
-        }
-        //(2)房主，返回所有信息
-        if(room.create_id === client_id ){
-          delete room.people;
-          var msgObj = {
-            status:1,
-            type: 'admin_room', /*房主，即创建者*/
-            room: room
-          };
-          return socket.emit('roomShow', msgObj);
-        }
-
-        //(3)房间人数已满，拒绝进入
-        if(room.people.length >= room.all_counts){
-          var msgObj = {
-            status: 0,
-            info: '房间人数已满'
-          };
-          return socket.emit('roomShow', msgObj);
-        }
-
-        //(4)如果第一次进入，则添加进数据库
-        room.people.push({
-          client_id: client_id,
-          count: 0,
-          is_over: 'false'
-        });
-
-        try{
-          //写入到db.json
-          fs.writeFileSync(FILE_NAME, JSON.stringify(db));
-          //返回第一次进入的编号
-          var index = room.people.length - 1;
-          var msgObj = {
-            status: 1,
-            all_counts: room.all_counts,
-            num: index
-          };
-          return socket.emit('roomShow', msgObj);
-        }catch(e){
-          var msgObj = {
-            status: 0,
-            info: '服务出错'
-          };
-          return socket.emit('roomShow', msgObj);
-        }
-      }
-    }
-
-    return socket.emit('roomShow', {
-      status: 0,
-      info: '该房间已过期'
-    });
 
   });
+
 
 
 
