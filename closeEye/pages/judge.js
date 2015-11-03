@@ -11,7 +11,8 @@ var {
   StatusBarIOS,
   TouchableOpacity,
   ScrollView,
-  Navigator
+  Navigator,
+  ProgressViewIOS
   } = React;
 
 
@@ -67,10 +68,10 @@ module.exports = React.createClass({
           <Text style={{color:'#000', fontSize:14}}>(房间号)</Text>
         </View>
         {items}
-        <View>
-          <Text style={{marginLeft:10,marginTop:10}}>用户对话</Text>
-          <TextInput style={[styles.input]} multiline={true} editable={false}/>
-        </View>
+        <ProgressViewIOS progress={0.3} style={styles.progress}/>
+        <Text style={{marginTop:10, fontSize:13, marginLeft:10}}>
+          当前人数/总人数：3/6
+        </Text>
         <TouchableOpacity style={[styles.btn, styles.center]} onPress={this._gameOver}>
           <Text style={{color:'#fff', fontWeight:'bold', fontSize:15}}>结束游戏</Text>
         </TouchableOpacity>
@@ -136,5 +137,8 @@ var styles = StyleSheet.create({
     paddingLeft:10,
     borderColor:'#ABABAB',
     borderRadius:4
+  },
+  progress:{
+    marginLeft:10,marginRight:10,marginTop:30
   }
 });
